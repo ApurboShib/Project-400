@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+:root {
+    --background: #fff;
+    --foreground: #252525;
+    --card: #fff;
+    --card-foreground: #252525;
+    --popover: #fff;
+    --popover-foreground: #252525;
+    --primary: #353535;
+    --primary-foreground: #fafafa;
+    --secondary: #f7f7f7;
+    --secondary-foreground: #353535;
+    --muted: #f7f7f7;
+    --muted-foreground: #8e8e8e;
+    --accent: #f7f7f7;
+    --accent-foreground: #353535;
+    --border: #ebebeb;
+    --input: #ebebeb;
+    --ring: #b5b5b5;
+    --radius: 10px;
+}
+
+.dark {
+    --background: #252525;
+    --foreground: #fafafa;
+    --card: #252525;
+    --card-foreground: #fafafa;
+    --popover: #252525;
+    --popover-foreground: #fafafa;
+    --primary: #fafafa;
+    --primary-foreground: #353535;
+    --secondary: #444444;
+    --secondary-foreground: #fafafa;
+    --muted: #444444;
+    --muted-foreground: #b5b5b5;
+    --accent: #444444;
+    --accent-foreground: #fafafa;
+    --border: #444444;
+    --input: #444444;
+    --ring: #707070;
+    --radius: 10px;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}

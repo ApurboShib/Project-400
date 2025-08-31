@@ -1,7 +1,9 @@
+import Homepage from "./components/Homepage/homepage.jsx";
+import "./index.css";
 function App() {
   return (
     <>
-      <h1 className="text-3xl bg-amber-300 font-bold ">Welcome to Project-400</h1>
+      <Homepage />
     </>
   );
 }

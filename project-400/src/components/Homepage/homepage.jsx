@@ -1,44 +1,23 @@
-// Example icons for demonstration (replace with your own SVGs or icon components)
-const Building2Icon = () => (
-  <span role="img" aria-label="building">
-    🏢
-  </span>
-);
-const CreditCardIcon = () => (
-  <span role="img" aria-label="credit-card">
-    💳
-  </span>
-);
-const UtensilsCrossedIcon = () => (
-  <span role="img" aria-label="utensils">
-    🍽️
-  </span>
-);
-const HeartIcon = () => (
-  <span role="img" aria-label="heart">
-    ❤️
-  </span>
-);
-const UsersIcon = () => (
-  <span role="img" aria-label="users">
-    👥
-  </span>
-);
-const CalendarIcon = () => (
-  <span role="img" aria-label="calendar">
-    📅
-  </span>
-);
-const LogInIcon = () => (
-  <span role="img" aria-label="login">
-    🔑
-  </span>
-);
-const UserPlusIcon = () => (
-  <span role="img" aria-label="user-plus">
-    ➕
-  </span>
-);
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  CreditCard,
+  UtensilsCrossed,
+  Heart,
+  Users,
+  Calendar,
+  Building2,
+  LogIn,
+  UserPlus,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
@@ -48,40 +27,46 @@ export default function HomePage() {
         <div className="container flex h-16 items-center justify-between px-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Building2Icon className="h-8 w-8 text-primary" />
+            <Building2 className="h-8 w-8 text-primary" />
             <span className="text-2xl font-bold text-foreground">UNC</span>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="text-foreground hover:text-primary transition-colors"
             >
               Home
-            </a>
-            <a
-              href="/about"
+            </Link>
+            <Link
+              to="/about"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               About
-            </a>
-            <a
-              href="/contact"
+            </Link>
+            <Link
+              to="/contact"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               Contact
-            </a>
+            </Link>
           </nav>
 
           {/* Auth Buttons */}
           <div className="flex items-center space-x-3">
-            <a href="/login" className="btn btn-ghost btn-sm">
-              <LogInIcon /> Login
-            </a>
-            <a href="/signup" className="btn btn-sm">
-              <UserPlusIcon /> Sign Up
-            </a>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/login">
+                <LogIn className="h-4 w-4 mr-2" />
+                Login
+              </Link>
+            </Button>
+            <Button size="sm" asChild>
+              <Link to="/signup">
+                <UserPlus className="h-4 w-4 mr-2" />
+                Sign Up
+              </Link>
+            </Button>
           </div>
         </div>
       </header>
@@ -101,18 +86,20 @@ export default function HomePage() {
 
           {/* Login Options */}
           <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
-            <a href="/student-login" className="btn btn-lg flex-1">
-              Student Login
-            </a>
-            <a href="/admin-login" className="btn btn-lg btn-secondary flex-1">
-              Admin Login
-            </a>
-            <a
-              href="/guest"
-              className="btn btn-lg btn-outline flex-1 bg-transparent"
+            <Button size="lg" className="flex-1" asChild>
+              <Link to="/student-login">Student Login</Link>
+            </Button>
+            <Button size="lg" variant="secondary" className="flex-1" asChild>
+              <Link to="/admin-login">Admin Login</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="flex-1 bg-transparent"
+              asChild
             >
-              Guest Access
-            </a>
+              <Link to="/guest">Guest Access</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -131,135 +118,145 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Smart Fee Tracker */}
-          <div className="card relative overflow-hidden">
-            <div className="card-header">
+          <Card className="relative overflow-hidden">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <CreditCardIcon className="h-6 w-6 text-primary" />
+                  <CreditCard className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">Smart Fee Tracker</div>
-                  <span className="badge badge-secondary mt-1">Automated</span>
+                  <CardTitle className="text-xl">Smart Fee Tracker</CardTitle>
+                  <Badge variant="secondary" className="mt-1">
+                    Automated
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Auto deduction for long leaves. Never worry about manual
                 calculations again.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
           {/* Meal Planner */}
-          <div className="card relative overflow-hidden">
-            <div className="card-header">
+          <Card className="relative overflow-hidden">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <UtensilsCrossedIcon className="h-6 w-6 text-primary" />
+                  <UtensilsCrossed className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">Meal Planner</div>
-                  <span className="badge badge-secondary mt-1">
+                  <CardTitle className="text-xl">Meal Planner</CardTitle>
+                  <Badge variant="secondary" className="mt-1">
                     Student Managed
-                  </span>
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Set by student manager. View weekly menu anytime, anywhere.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
           {/* Prayer & Geeta Class */}
-          <div className="card relative overflow-hidden">
-            <div className="card-header">
+          <Card className="relative overflow-hidden">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <HeartIcon className="h-6 w-6 text-primary" />
+                  <Heart className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">Prayer & Geeta Class</div>
-                  <span className="badge badge-secondary mt-1">Mandatory</span>
+                  <CardTitle className="text-xl">
+                    Prayer & Geeta Class
+                  </CardTitle>
+                  <Badge variant="secondary" className="mt-1">
+                    Mandatory
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Track mandatory attendance for daily prayers and weekly Geeta
                 classes.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
           {/* Monthly Student Manager */}
-          <div className="card relative overflow-hidden">
-            <div className="card-header">
+          <Card className="relative overflow-hidden">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <UsersIcon className="h-6 w-6 text-primary" />
+                  <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">
+                  <CardTitle className="text-xl">
                     Monthly Student Manager
-                  </div>
-                  <span className="badge badge-secondary mt-1">Leadership</span>
+                  </CardTitle>
+                  <Badge variant="secondary" className="mt-1">
+                    Leadership
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Student-led leadership system. Rotate monthly for fair
                 governance.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
           {/* Leave System */}
-          <div className="card relative overflow-hidden">
-            <div className="card-header">
+          <Card className="relative overflow-hidden">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <CalendarIcon className="h-6 w-6 text-primary" />
+                  <Calendar className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">Leave System</div>
-                  <span className="badge badge-secondary mt-1">
+                  <CardTitle className="text-xl">Leave System</CardTitle>
+                  <Badge variant="secondary" className="mt-1">
                     Smart Detection
-                  </span>
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Auto-detect and reduce fee after 6+ days leave. Transparent and
                 fair.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
           {/* Additional Features Card */}
-          <div className="card relative overflow-hidden md:col-span-2 lg:col-span-1">
-            <div className="card-header">
+          <Card className="relative overflow-hidden md:col-span-2 lg:col-span-1">
+            <CardHeader>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-primary/10 rounded-lg">
-                  <Building2Icon className="h-6 w-6 text-primary" />
+                  <Building2 className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <div className="card-title text-xl">Complete Management</div>
-                  <span className="badge badge-secondary mt-1">All-in-One</span>
+                  <CardTitle className="text-xl">Complete Management</CardTitle>
+                  <Badge variant="secondary" className="mt-1">
+                    All-in-One
+                  </Badge>
                 </div>
               </div>
-            </div>
-            <div className="card-content">
-              <div className="card-description text-base">
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-base">
                 Events, notices, complaints, room management, and much more in
                 one platform.
-              </div>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -268,7 +265,7 @@ export default function HomePage() {
         <div className="container px-4 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">
-              <Building2Icon className="h-6 w-6 text-primary" />
+              <Building2 className="h-6 w-6 text-primary" />
               <span className="text-lg font-semibold text-foreground">
                 UNC Portal
               </span>

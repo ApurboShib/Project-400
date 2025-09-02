@@ -43,14 +43,7 @@ export default function HomePage() {
             <Button size="lg" variant="secondary" className="flex-1" asChild>
               <Link to="/admin-login">Admin Login</Link>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="flex-1 bg-transparent"
-              asChild
-            >
-              <Link to="/guest">Guest Access</Link>
-            </Button>
+            {/* Manager Login removed. Only Student and Admin login remain. */}
           </div>
         </div>
       </section>

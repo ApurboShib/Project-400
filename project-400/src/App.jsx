@@ -1,9 +1,14 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import HomePage from "@/components/Homepage/homepage";
+import StudentLoginPage from "@/pages/StudentLogin";
+import ManagerLoginPage from "@/pages/ManagerLogin";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
+import StudentSignupPage from "@/pages/StudentSignup";
+import ManagerSignupPage from "@/pages/ManagerSignup";
+// import AdminSignupPage from "@/pages/AdminSignup";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminSignup from "@/pages/AdminSignup";
 <Route path="/admin-signup" element={<AdminSignup />} />;
@@ -22,13 +27,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
-          <Route
-            path="/student-login"
-            element={<div>Student Login Page</div>}
-          />
+          <Route path="/student-login" element={<StudentLoginPage />} />
+          <Route path="/manager-login" element={<ManagerLoginPage />} />
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/guest" element={<div>Guest Access Page</div>} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/student-signup" element={<StudentSignupPage />} />
+          <Route path="/manager-signup" element={<ManagerSignupPage />} />
+          <Route path="/admin-signup" element={<AdminSignup />} />
         </Routes>
         <Toaster />
       </Router>

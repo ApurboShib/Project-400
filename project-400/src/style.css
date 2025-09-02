@@ -44,11 +44,8 @@
 }
 
 @layer base {
-    * {
-        @apply border-border outline-ring/50;
-    }
 
-    body {
-        @apply bg-background text-foreground;
-    }
+
+    /* Remove invalid @apply for bg-background and text-foreground */
+    /* Use these classes directly in JSX, not in CSS */
 }

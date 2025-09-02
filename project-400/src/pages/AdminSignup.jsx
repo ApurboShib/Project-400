@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 
-export default function Signup() {
+export default function AdminSignup() {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -20,9 +20,9 @@ export default function Signup() {
 
   const handleSignup = (e) => {
     e.preventDefault();
-    // Add signup logic here
-    console.log("Signup form submitted:", form);
-    window.location.href = "/login";
+    // Add admin signup logic here
+    console.log("Admin signup form submitted:", form);
+    window.location.href = "/admin-login";
   };
 
   return (
@@ -30,26 +30,28 @@ export default function Signup() {
       <div className="w-full max-w-md">
         <Card>
           <CardHeader>
-            <CardTitle>Sign Up</CardTitle>
-            <CardDescription>Create your UNC Hostel account</CardDescription>
+            <CardTitle className="text-center">Admin Sign Up</CardTitle>
+            <CardDescription className="text-center">
+              Request administrative access to UNC Hostel
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-email">Email</Label>
+                <Label htmlFor="admin-signup-email">Admin Email</Label>
                 <Input
-                  id="signup-email"
+                  id="admin-signup-email"
                   type="email"
-                  placeholder="your.email@example.com"
+                  placeholder="admin@unchostel.com"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
+                <Label htmlFor="admin-signup-password">Password</Label>
                 <Input
-                  id="signup-password"
+                  id="admin-signup-password"
                   type="password"
                   value={form.password}
                   onChange={(e) =>
@@ -59,11 +61,11 @@ export default function Signup() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="signup-confirm-password">
+                <Label htmlFor="admin-signup-confirm-password">
                   Confirm Password
                 </Label>
                 <Input
-                  id="signup-confirm-password"
+                  id="admin-signup-confirm-password"
                   type="password"
                   value={form.confirmPassword}
                   onChange={(e) =>
@@ -76,13 +78,16 @@ export default function Signup() {
                 type="submit"
                 className="w-full bg-gradient-to-r from-primary to-blue-500 text-white font-bold py-2 px-4 rounded shadow-lg hover:from-blue-500 hover:to-primary transition-colors duration-200"
               >
-                Create Account
+                Request Admin Account
               </Button>
             </form>
             <div className="text-center mt-6">
               <p className="text-sm text-muted-foreground">
-                Already have an account?{" "}
-                <Link to="/login" className="text-primary hover:underline">
+                Already have admin access?{" "}
+                <Link
+                  to="/admin-login"
+                  className="text-primary hover:underline"
+                >
                   Login here
                 </Link>
               </p>

@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[color:var(--background)]">
       {/* Hero Section */}
       <section className="container px-4 py-16 md:py-24">
         <div className="flex flex-col items-center text-center space-y-8">
@@ -212,7 +212,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-muted/30">
+      <footer className="border-t border-gray-200 bg-muted/30">
         <div className="container px-4 py-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">

@@ -4,6 +4,9 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
+import AdminLogin from "@/pages/AdminLogin";
+import AdminSignup from "@/pages/AdminSignup";
+<Route path="/admin-signup" element={<AdminSignup />} />;
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
@@ -23,7 +26,7 @@ function App() {
             path="/student-login"
             element={<div>Student Login Page</div>}
           />
-          <Route path="/admin-login" element={<div>Admin Login Page</div>} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/guest" element={<div>Guest Access Page</div>} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

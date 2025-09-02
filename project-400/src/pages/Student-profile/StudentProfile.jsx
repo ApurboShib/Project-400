@@ -1,17 +1,12 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
+
+import { useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -20,1082 +15,649 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  ArrowLeft,
-  Save,
   User,
   GraduationCap,
-  Heart,
-  Upload,
-  CheckCircle,
-  Clock,
-  AlertCircle,
-  Users,
-  FileText,
-  Camera,
-  Mail,
   Phone,
-  Calendar,
-  DollarSign,
-  TrendingUp,
+  Home,
+  Mail,
   MapPin,
-  Building,
+  Calendar,
+  BookOpen,
+  Heart,
+  Shield,
+  Menu,
+  Bell,
+  Settings,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 export default function StudentProfile() {
-  const [user, setUser] = useState(null);
-  const [basicInfo, setBasicInfo] = useState({
-    room_number: "",
-    building: "",
-    email: "",
-    phone: "",
-    geeta_attendance: 0,
-    prayer_attendance: 0,
-    due_amount: 0,
-    due_month: "",
-  });
-  const [activePhase, setActivePhase] = useState("personal");
   const [profileData, setProfileData] = useState({
-    // Basic Info (existing)
-    full_name: "",
-    phone: "",
-    room_number: "",
+    // Personal Information
+    full_name: "Apurbo Shib Joy",
+    father_name: "Soves shib",
+    mother_name: "Shilpi Shib",
+    dob: "2002-05-15",
+    gender: "Male",
+    blood_group: "B+",
+    religion: "Hindu",
+    email: "apurbo.shibjoy@deu.edu.bd",
+    phone: "+880 1712-345678",
 
-    // Phase 1: Personal Details
-    father_name: "",
-    mother_name: "",
-    date_of_birth: "",
-    blood_group: "",
-    religion: "",
-    guardian_contact: "",
-    permanent_address: "",
-    current_address: "",
+    // Academic Information
+    student_id: "UNC-2021-001",
+    department: "Computer Science & Engineering",
+    batch: "2021",
+    year: "3rd Year",
+    cgpa: "3.75",
 
-    // Phase 2: Academic Details
-    student_type: "", // school/college/nursing/university
-    institute_name: "",
-    department: "",
-    semester_year: "",
-    admission_session: "",
+    // Hostel Information
+    room_number: "A-205",
+    building: "Babul-Badol",
+    floor: "2nd Floor",
+    room_type: "Double Sharing",
 
-    // Phase 3: Emergency + Identity
-    emergency_contact_name: "",
-    emergency_contact_phone: "",
-    emergency_contact_relation: "",
-    medical_conditions: "",
-    profile_photo: null,
-    id_card_upload: null,
+    // Prayer & Religious
+    prayer_attendance: "Regular",
+    friday_prayer: "Always",
+
+    // Emergency Information
+    guardian_contact: "+880 1712-987654",
+    emergency_contact: "+880 1712-555666",
+    permanent_address: "Sylhet, Bangladesh",
+    current_address: "somota 17, Sylhet, Bangladesh",
+
+    // Hostel Management Summary
+    hostel_summary:
+      "Currently residing in Babul-Badol hostel, room A-205, 2nd floor. Maintains regular prayer attendance and follows vegetarian dietary restrictions. No medical conditions reported. Actively participates in hostel activities and maintains good relations with fellow residents.",
+    
+    // Additional Information
+    medical_conditions: "None",
+    dietary_restrictions: "vegetarian",
+    hobbies: "Programming, Reading, Cricket",
   });
 
-  const [completionStatus, setCompletionStatus] = useState({
-    personal: 0,
-    academic: 0,
-    emergency: 0,
-    overall: 0,
-  });
-
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchUserProfile();
-    fetchBasicInfo();
-  }, []);
-  const fetchBasicInfo = async () => {
-    try {
-      const response = await fetch("/api/users/basic-info", {
-        credentials: "include",
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBasicInfo(data.basicInfo);
-      }
-    } catch (error) {
-      console.error("Failed to fetch basic info:", error);
-    }
-  };
-
-  useEffect(() => {
-    calculateCompletionStatus();
-  }, [profileData]);
-
-  const calculateCompletionStatus = () => {
-    const personalFields = [
-      "father_name",
-      "mother_name",
-      "date_of_birth",
-      "blood_group",
-      "religion",
-      "guardian_contact",
-      "permanent_address",
-      "current_address",
-    ];
-    const academicFields = [
-      "student_type",
-      "institute_name",
-      "department",
-      "semester_year",
-      "admission_session",
-    ];
-    const emergencyFields = [
-      "emergency_contact_name",
-      "emergency_contact_phone",
-      "emergency_contact_relation",
-    ];
-
-    const personalComplete = personalFields.filter((field) =>
-      profileData[field]?.trim()
-    ).length;
-    const academicComplete = academicFields.filter((field) =>
-      profileData[field]?.trim()
-    ).length;
-    const emergencyComplete = emergencyFields.filter((field) =>
-      profileData[field]?.trim()
-    ).length;
-
-    const personalPercent = Math.round(
-      (personalComplete / personalFields.length) * 100
-    );
-    const academicPercent = Math.round(
-      (academicComplete / academicFields.length) * 100
-    );
-    const emergencyPercent = Math.round(
-      (emergencyComplete / emergencyFields.length) * 100
-    );
-    const overallPercent = Math.round(
-      ((personalComplete + academicComplete + emergencyComplete) /
-        (personalFields.length +
-          academicFields.length +
-          emergencyFields.length)) *
-        100
-    );
-
-    setCompletionStatus({
-      personal: personalPercent,
-      academic: academicPercent,
-      emergency: emergencyPercent,
-      overall: overallPercent,
-    });
-  };
-
-  const fetchUserProfile = async () => {
-    try {
-      const response = await fetch("/api/users/profile", {
-        credentials: "include",
-      });
-      const text = await response.text();
-      try {
-        const data = JSON.parse(text);
-        if (response.ok) {
-          setUser(data.user);
-          setProfileData((prev) => ({
-            ...prev,
-            full_name: data.user.full_name || "",
-            phone: data.user.phone || "",
-            room_number: data.user.room_number || "",
-            // Load extended profile data if available
-            ...data.user.extended_profile,
-          }));
-        } else {
-          navigate("/student-login");
-        }
-      } catch (jsonError) {
-        console.error("Response was not valid JSON:", text);
-        setError("Server returned invalid response");
-      }
-    } catch (error) {
-      console.error("Failed to fetch profile:", error);
-      setError("Failed to load profile");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    setError("");
-    setMessage("");
-
-    try {
-      const response = await fetch("/api/users/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setUser(data.user);
-        setMessage("Profile updated successfully!");
-        setTimeout(() => setMessage(""), 3000);
-      } else {
-        setError(data.error || "Failed to update profile");
-      }
-    } catch (error) {
-      setError("Network error. Please try again.");
-    } finally {
-      setSaving(false);
-    }
+  const completion = {
+    personal: 95,
+    academic: 90,
+    hostel: 85,
+    emergency: 80,
+    overall: 88,
   };
 
   const handleChange = (field, value) => {
-    setProfileData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setProfileData((prev) => ({ ...prev, [field]: value }));
   };
-
-  const getPhaseIcon = (phase, status) => {
-    if (status === 100) return <CheckCircle className="h-5 w-5 text-primary" />;
-    if (status > 0) return <Clock className="h-5 w-5 text-accent" />;
-    return <AlertCircle className="h-5 w-5 text-muted-foreground" />;
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading profile...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container flex h-16 items-center justify-between px-4">
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/student/dashboard">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
-              </Link>
-            </Button>
-            <div>
-              <h1 className="text-xl font-semibold text-balance">
-                Student Profile
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Complete your profile in 3 simple phases
-              </p>
-            </div>
-          </div>
-          <Badge variant="secondary" className="font-medium">
-            {user?.student_id}
-          </Badge>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Navigation Bar */}
 
-      <div className="container px-4 py-8 max-w-4xl">
-        <div className="mb-8 space-y-6">
-          {/* Profile Overview Card */}
-          <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-accent/5">
-            <CardContent className="pt-6">
+      <div className="max-w-6xl mx-auto space-y-6 p-6">
+        {/* Enhanced Header */}
+        <Card className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-xl">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
-                <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-                  <User className="h-10 w-10 text-primary" />
+                <div className="relative">
+                  {/* <img
+                    src="/logo.png"
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full border-4 border-white shadow-lg"
+                  /> */}
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-balance">
-                    {user?.full_name || "Complete Your Profile"}
-                  </h2>
-                  <div className="flex items-center space-x-4 text-muted-foreground mb-4">
-                    <div className="flex items-center space-x-1">
-                      <Mail className="h-4 w-4" />
-                      <span className="text-sm">
-                        {basicInfo.email || user?.email}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Phone className="h-4 w-4" />
-                      <span className="text-sm">
-                        {basicInfo.phone || "Not provided"}
-                      </span>
-                    </div>
+                <div>
+                  <h1 className="text-2xl font-bold">
+                    {profileData.full_name}
+                  </h1>
+                  <p className="text-blue-100 text-lg">
+                    ID: {profileData.student_id}
+                  </p>
+                  <div className="flex items-center space-x-4 mt-2">
+                    <Badge
+                      variant="secondary"
+                      className="bg-white/20 text-white"
+                    >
+                      {profileData.department}
+                    </Badge>
+                    <Badge
+                      variant="secondary"
+                      className="bg-white/20 text-white"
+                    >
+                      {profileData.year}
+                    </Badge>
                   </div>
-
-                  {/* Overall Progress */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">
-                        Profile Completion
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {completionStatus.overall}%
-                      </span>
-                    </div>
-                    <Progress
-                      value={completionStatus.overall}
-                      className="h-2"
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="relative w-24 h-24">
+                  <svg className="w-24 h-24 transform -rotate-90">
+                    <circle
+                      cx="48"
+                      cy="48"
+                      r="40"
+                      stroke="rgba(255,255,255,0.3)"
+                      strokeWidth="8"
+                      fill="none"
                     />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Basic Information Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Room & Building Info */}
-            <Card>
-              <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                <Building className="h-4 w-4 text-primary" />
-                <div className="ml-3">
-                  <CardTitle className="text-sm font-medium">
-                    Room & Building
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm">
-                      Room: {basicInfo.room_number || "Not assigned"}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Building className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm">
-                      Building: {basicInfo.building || "Not assigned"}
+                    <circle
+                      cx="48"
+                      cy="48"
+                      r="40"
+                      stroke="white"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeDasharray={`${2 * Math.PI * 40}`}
+                      strokeDashoffset={`${
+                        2 * Math.PI * 40 * (1 - completion.overall / 100)
+                      }`}
+                      className="transition-all duration-500"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-2xl font-bold">
+                      {completion.overall}%
                     </span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Geeta Class Attendance */}
-            <Card>
-              <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                <Calendar className="h-4 w-4 text-accent" />
-                <div className="ml-3">
-                  <CardTitle className="text-sm font-medium">
-                    Geeta Class
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">
-                      Attendance
-                    </span>
-                    <span className="text-xs font-medium">
-                      {basicInfo.geeta_attendance}%
-                    </span>
-                  </div>
-                  <Progress
-                    value={basicInfo.geeta_attendance}
-                    className="h-1"
-                  />
-                  <Badge
-                    variant={
-                      basicInfo.geeta_attendance >= 75
-                        ? "default"
-                        : "destructive"
-                    }
-                    className="text-xs"
-                  >
-                    {basicInfo.geeta_attendance >= 75
-                      ? "Good"
-                      : "Needs Improvement"}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Prayer Attendance */}
-            <Card>
-              <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                <TrendingUp className="h-4 w-4 text-accent" />
-                <div className="ml-3">
-                  <CardTitle className="text-sm font-medium">
-                    Prayer Attendance
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">
-                      Attendance
-                    </span>
-                    <span className="text-xs font-medium">
-                      {basicInfo.prayer_attendance}%
-                    </span>
-                  </div>
-                  <Progress
-                    value={basicInfo.prayer_attendance}
-                    className="h-1"
-                  />
-                  <Badge
-                    variant={
-                      basicInfo.prayer_attendance >= 75
-                        ? "default"
-                        : "destructive"
-                    }
-                    className="text-xs"
-                  >
-                    {basicInfo.prayer_attendance >= 75
-                      ? "Excellent"
-                      : "Needs Improvement"}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Due Amount */}
-            <Card
-              className={
-                basicInfo.due_amount > 0
-                  ? "border-destructive/50 bg-destructive/5"
-                  : ""
-              }
-            >
-              <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-                <DollarSign
-                  className={`h-4 w-4 ${
-                    basicInfo.due_amount > 0
-                      ? "text-destructive"
-                      : "text-primary"
-                  }`}
-                />
-                <div className="ml-3">
-                  <CardTitle className="text-sm font-medium">
-                    Fee Status
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-1">
-                  {basicInfo.due_amount > 0 ? (
-                    <>
-                      <div className="text-lg font-bold text-destructive">
-                        ৳{basicInfo.due_amount}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        Due for {basicInfo.due_month}
-                      </div>
-                      <Badge variant="destructive" className="text-xs">
-                        Payment Required
-                      </Badge>
-                    </>
-                  ) : (
-                    <>
-                      <div className="text-lg font-bold text-primary">৳0</div>
-                      <div className="text-xs text-muted-foreground">
-                        All payments up to date
-                      </div>
-                      <Badge variant="default" className="text-xs">
-                        Paid
-                      </Badge>
-                    </>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              activePhase === "personal" ? "ring-2 ring-primary" : ""
-            }`}
-            onClick={() => setActivePhase("personal")}
-          >
-            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              {getPhaseIcon("personal", completionStatus.personal)}
-              <div className="ml-3">
-                <CardTitle className="text-sm font-medium">
-                  Phase 1: Personal
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  Basic personal information
-                </CardDescription>
+                <p className="text-blue-100 mt-2">Profile Complete</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    Progress
-                  </span>
-                  <span className="text-xs font-medium">
-                    {completionStatus.personal}%
-                  </span>
-                </div>
-                <Progress value={completionStatus.personal} className="h-1" />
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              activePhase === "academic" ? "ring-2 ring-primary" : ""
-            }`}
-            onClick={() => setActivePhase("academic")}
-          >
-            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              {getPhaseIcon("academic", completionStatus.academic)}
-              <div className="ml-3">
-                <CardTitle className="text-sm font-medium">
-                  Phase 2: Academic
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  Educational background
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    Progress
-                  </span>
-                  <span className="text-xs font-medium">
-                    {completionStatus.academic}%
-                  </span>
-                </div>
-                <Progress value={completionStatus.academic} className="h-1" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card
-            className={`cursor-pointer transition-all hover:shadow-md ${
-              activePhase === "emergency" ? "ring-2 ring-primary" : ""
-            }`}
-            onClick={() => setActivePhase("emergency")}
-          >
-            <CardHeader className="flex flex-row items-center space-y-0 pb-2">
-              {getPhaseIcon("emergency", completionStatus.emergency)}
-              <div className="ml-3">
-                <CardTitle className="text-sm font-medium">
-                  Phase 3: Emergency
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  Emergency contacts & identity
-                </CardDescription>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    Progress
-                  </span>
-                  <span className="text-xs font-medium">
-                    {completionStatus.emergency}%
-                  </span>
-                </div>
-                <Progress value={completionStatus.emergency} className="h-1" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs
-          value={activePhase}
-          onValueChange={setActivePhase}
-          className="space-y-6"
-        >
-          <TabsList className="grid w-full grid-cols-3">
+        {/* Enhanced Tabs */}
+        <Tabs defaultValue="personal" className="w-full">
+          <TabsList className="grid grid-cols-4 rounded-xl shadow-lg bg-white p-1 h-14">
             <TabsTrigger
               value="personal"
-              className="flex items-center space-x-2"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
-              <Users className="h-4 w-4" />
-              <span>Personal</span>
+              <User className="w-4 h-4" /> Personal
             </TabsTrigger>
             <TabsTrigger
               value="academic"
-              className="flex items-center space-x-2"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
-              <GraduationCap className="h-4 w-4" />
-              <span>Academic</span>
+              <GraduationCap className="w-4 h-4" /> Academic
+            </TabsTrigger>
+            <TabsTrigger
+              value="hostel"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+            >
+              <Home className="w-4 h-4" /> Hostel
             </TabsTrigger>
             <TabsTrigger
               value="emergency"
-              className="flex items-center space-x-2"
+              className="flex items-center gap-2 rounded-lg data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
-              <Heart className="h-4 w-4" />
-              <span>Emergency</span>
+              <Shield className="w-4 h-4" /> Emergency
             </TabsTrigger>
           </TabsList>
 
-          {/* Phase 1: Personal Details */}
+          {/* Personal Information Tab */}
           <TabsContent value="personal">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  <span>Personal Information</span>
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-t-lg">
+                <CardTitle className="flex items-center gap-2 text-blue-900">
+                  <User className="w-5 h-5" />
+                  Personal Information
                 </CardTitle>
-                <CardDescription>
-                  Complete your basic personal and family details
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {message && (
-                    <div className="text-green-600 bg-green-100 rounded p-2 text-sm mb-2">
-                      <CheckCircle className="h-4 w-4" />
-                      {message}
-                    </div>
-                  )}
-
-                  {error && (
-                    <div className="text-red-600 bg-red-100 rounded p-2 text-sm mb-2">
-                      <AlertCircle className="h-4 w-4" />
-                      {error}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="full_name">Full Name *</Label>
-                      <Input
-                        id="full_name"
-                        placeholder="Enter your full name"
-                        value={profileData.full_name}
-                        onChange={(e) =>
-                          handleChange("full_name", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="date_of_birth">Date of Birth *</Label>
-                      <Input
-                        id="date_of_birth"
-                        type="date"
-                        value={profileData.date_of_birth}
-                        onChange={(e) =>
-                          handleChange("date_of_birth", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="father_name">Father's Name *</Label>
-                      <Input
-                        id="father_name"
-                        placeholder="Enter father's name"
-                        value={profileData.father_name}
-                        onChange={(e) =>
-                          handleChange("father_name", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="mother_name">Mother's Name *</Label>
-                      <Input
-                        id="mother_name"
-                        placeholder="Enter mother's name"
-                        value={profileData.mother_name}
-                        onChange={(e) =>
-                          handleChange("mother_name", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="blood_group">Blood Group *</Label>
-                      <Select
-                        value={profileData.blood_group}
-                        onValueChange={(value) =>
-                          handleChange("blood_group", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select blood group" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="A+">A+</SelectItem>
-                          <SelectItem value="A-">A-</SelectItem>
-                          <SelectItem value="B+">B+</SelectItem>
-                          <SelectItem value="B-">B-</SelectItem>
-                          <SelectItem value="AB+">AB+</SelectItem>
-                          <SelectItem value="AB-">AB-</SelectItem>
-                          <SelectItem value="O+">O+</SelectItem>
-                          <SelectItem value="O-">O-</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="religion">Religion *</Label>
-                      <Input
-                        id="religion"
-                        placeholder="Enter your religion"
-                        value={profileData.religion}
-                        onChange={(e) =>
-                          handleChange("religion", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Contact Number *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="Enter your phone number"
-                        value={profileData.phone}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="guardian_contact">
-                        Guardian Contact *
-                      </Label>
-                      <Input
-                        id="guardian_contact"
-                        type="tel"
-                        placeholder="Enter guardian's phone number"
-                        value={profileData.guardian_contact}
-                        onChange={(e) =>
-                          handleChange("guardian_contact", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <User className="w-4 h-4" /> Full Name
+                    </Label>
+                    <Input
+                      value={profileData.full_name}
+                      onChange={(e) =>
+                        handleChange("full_name", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
                   </div>
-
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="permanent_address">
-                        Permanent Address *
-                      </Label>
-                      <Textarea
-                        id="permanent_address"
-                        placeholder="Enter your permanent address"
-                        value={profileData.permanent_address}
-                        onChange={(e) =>
-                          handleChange("permanent_address", e.target.value)
-                        }
-                        required
-                        rows={3}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="current_address">Current Address *</Label>
-                      <Textarea
-                        id="current_address"
-                        placeholder="Enter your current address"
-                        value={profileData.current_address}
-                        onChange={(e) =>
-                          handleChange("current_address", e.target.value)
-                        }
-                        required
-                        rows={3}
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Calendar className="w-4 h-4" /> Date of Birth
+                    </Label>
+                    <Input
+                      type="date"
+                      value={profileData.dob}
+                      onChange={(e) => handleChange("dob", e.target.value)}
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
                   </div>
-
-                  <Button type="submit" className="w-full" disabled={saving}>
-                    {saving ? (
-                      "Saving..."
-                    ) : (
-                      <>
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Personal Information
-                      </>
-                    )}
-                  </Button>
-                </form>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Father's Name
+                    </Label>
+                    <Input
+                      value={profileData.father_name}
+                      onChange={(e) =>
+                        handleChange("father_name", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Mother's Name
+                    </Label>
+                    <Input
+                      value={profileData.mother_name}
+                      onChange={(e) =>
+                        handleChange("mother_name", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Gender
+                    </Label>
+                    <Select
+                      value={profileData.gender}
+                      onValueChange={(value) => handleChange("gender", value)}
+                    >
+                      <SelectTrigger className="border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Heart className="w-4 h-4" /> Blood Group
+                    </Label>
+                    <Input
+                      value={profileData.blood_group}
+                      onChange={(e) =>
+                        handleChange("blood_group", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Religion
+                    </Label>
+                    <Input
+                      value={profileData.religion}
+                      onChange={(e) => handleChange("religion", e.target.value)}
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Mail className="w-4 h-4" /> Email
+                    </Label>
+                    <Input
+                      type="email"
+                      value={profileData.email}
+                      onChange={(e) => handleChange("email", e.target.value)}
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Phone className="w-4 h-4" /> Phone
+                    </Label>
+                    <Input
+                      value={profileData.phone}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      className="border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Phase 2: Academic Details */}
+          {/* Academic Information Tab */}
           <TabsContent value="academic">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <GraduationCap className="h-5 w-5 text-primary" />
-                  <span>Academic Information</span>
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-t-lg">
+                <CardTitle className="flex items-center gap-2 text-green-900">
+                  <GraduationCap className="w-5 h-5" />
+                  Academic Information
                 </CardTitle>
-                <CardDescription>
-                  Provide details about your educational background
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="student_type">Student Type *</Label>
-                      <Select
-                        value={profileData.student_type}
-                        onValueChange={(value) =>
-                          handleChange("student_type", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select student type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="school">School Student</SelectItem>
-                          <SelectItem value="college">
-                            College Student
-                          </SelectItem>
-                          <SelectItem value="nursing">
-                            Nursing Student
-                          </SelectItem>
-                          <SelectItem value="university">
-                            University Student
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="institute_name">
-                        University / Institute Name *
-                      </Label>
-                      <Input
-                        id="institute_name"
-                        placeholder="Enter your institute name"
-                        value={profileData.institute_name}
-                        onChange={(e) =>
-                          handleChange("institute_name", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="department">Department *</Label>
-                      <Input
-                        id="department"
-                        placeholder="Enter your department"
-                        value={profileData.department}
-                        onChange={(e) =>
-                          handleChange("department", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="semester_year">Semester / Year *</Label>
-                      <Input
-                        id="semester_year"
-                        placeholder="e.g., 3rd Semester, 2nd Year"
-                        value={profileData.semester_year}
-                        onChange={(e) =>
-                          handleChange("semester_year", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="admission_session">
-                        Admission Session *
-                      </Label>
-                      <Input
-                        id="admission_session"
-                        placeholder="e.g., 2023-2024, Spring 2023"
-                        value={profileData.admission_session}
-                        onChange={(e) =>
-                          handleChange("admission_session", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Student ID
+                    </Label>
+                    <Input
+                      value={profileData.student_id}
+                      onChange={(e) =>
+                        handleChange("student_id", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    />
                   </div>
-
-                  <Button type="submit" className="w-full" disabled={saving}>
-                    {saving ? (
-                      "Saving..."
-                    ) : (
-                      <>
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Academic Information
-                      </>
-                    )}
-                  </Button>
-                </form>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Department
+                    </Label>
+                    <Input
+                      value={profileData.department}
+                      onChange={(e) =>
+                        handleChange("department", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Batch
+                    </Label>
+                    <Input
+                      value={profileData.batch}
+                      onChange={(e) => handleChange("batch", e.target.value)}
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Current Year
+                    </Label>
+                    <Input
+                      value={profileData.year}
+                      onChange={(e) => handleChange("year", e.target.value)}
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      CGPA
+                    </Label>
+                    <Input
+                      value={profileData.cgpa}
+                      onChange={(e) => handleChange("cgpa", e.target.value)}
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <BookOpen className="w-4 h-4" /> DEU Summary
+                    </Label>
+                    <Textarea
+                      value={profileData.deu_summary}
+                      onChange={(e) =>
+                        handleChange("deu_summary", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-green-500 focus:ring-green-500 min-h-[100px]"
+                      placeholder="Brief summary of your academic journey and achievements at DEU..."
+                    />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          {/* Phase 3: Emergency + Identity */}
-          <TabsContent value="emergency">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Heart className="h-5 w-5 text-primary" />
-                  <span>Emergency & Identity</span>
+          {/* Hostel Information Tab */}
+          <TabsContent value="hostel">
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur">
+              <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-t-lg">
+                <CardTitle className="flex items-center gap-2 text-orange-900">
+                  <Home className="w-5 h-5" />
+                  Hostel Information
+                  <Badge
+                    variant="secondary"
+                    className="ml-2 bg-orange-100 text-orange-800"
+                  >
+                    Read Only
+                  </Badge>
                 </CardTitle>
-                <CardDescription>
-                  Emergency contacts, medical information, and identity
-                  documents
-                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-foreground">
-                      Emergency Contact Information
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="emergency_contact_name">
-                          Emergency Contact Name *
-                        </Label>
-                        <Input
-                          id="emergency_contact_name"
-                          placeholder="Enter emergency contact name"
-                          value={profileData.emergency_contact_name}
-                          onChange={(e) =>
-                            handleChange(
-                              "emergency_contact_name",
-                              e.target.value
-                            )
-                          }
-                          required
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="emergency_contact_phone">
-                          Emergency Contact Phone *
-                        </Label>
-                        <Input
-                          id="emergency_contact_phone"
-                          type="tel"
-                          placeholder="Enter emergency contact phone"
-                          value={profileData.emergency_contact_phone}
-                          onChange={(e) =>
-                            handleChange(
-                              "emergency_contact_phone",
-                              e.target.value
-                            )
-                          }
-                          required
-                        />
-                      </div>
-
-                      <div className="space-y-2 md:col-span-2">
-                        <Label htmlFor="emergency_contact_relation">
-                          Relationship *
-                        </Label>
-                        <Select
-                          value={profileData.emergency_contact_relation}
-                          onValueChange={(value) =>
-                            handleChange("emergency_contact_relation", value)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select relationship" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="parent">Parent</SelectItem>
-                            <SelectItem value="guardian">Guardian</SelectItem>
-                            <SelectItem value="sibling">Sibling</SelectItem>
-                            <SelectItem value="relative">Relative</SelectItem>
-                            <SelectItem value="friend">Friend</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-foreground">
-                      Medical Information
-                    </h4>
-                    <div className="space-y-2">
-                      <Label htmlFor="medical_conditions">
-                        Medical Conditions
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-lg border border-blue-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MapPin className="w-4 h-4 text-blue-600" />
+                      <Label className="text-sm font-medium text-blue-800">
+                        Room Number
                       </Label>
-                      <Textarea
-                        id="medical_conditions"
-                        placeholder="List any medical conditions, allergies, or medications (optional)"
-                        value={profileData.medical_conditions}
-                        onChange={(e) =>
-                          handleChange("medical_conditions", e.target.value)
-                        }
-                        rows={3}
-                      />
+                    </div>
+                    <p className="text-lg font-semibold text-blue-900">
+                      {profileData.room_number}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Home className="w-4 h-4 text-green-600" />
+                      <Label className="text-sm font-medium text-green-800">
+                        Building
+                      </Label>
+                    </div>
+                    <p className="text-lg font-semibold text-green-900">
+                      {profileData.building}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-lg border border-purple-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calendar className="w-4 h-4 text-purple-600" />
+                      <Label className="text-sm font-medium text-purple-800">
+                        Floor
+                      </Label>
+                    </div>
+                    <p className="text-lg font-semibold text-purple-900">
+                      {profileData.floor}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 rounded-lg border border-indigo-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <User className="w-4 h-4 text-indigo-600" />
+                      <Label className="text-sm font-medium text-indigo-800">
+                        Room Type
+                      </Label>
+                    </div>
+                    <p className="text-lg font-semibold text-indigo-900">
+                      {profileData.room_type}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-teal-50 to-teal-100 p-4 rounded-lg border border-teal-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <BookOpen className="w-4 h-4 text-teal-600" />
+                      <Label className="text-sm font-medium text-teal-800">
+                        Prayer Attendance
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-lg font-semibold text-teal-900">
+                        {profileData.prayer_attendance}
+                      </p>
+                      {profileData.prayer_attendance === "Regular" && (
+                        <Badge className="bg-green-500 text-white text-xs">
+                          Excellent
+                        </Badge>
+                      )}
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-foreground">
-                      Document Uploads
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="profile_photo">
-                          Passport-size Photo
-                        </Label>
-                        <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
-                          <Camera className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Upload your passport-size photo
-                          </p>
-                          <Button variant="outline" size="sm">
-                            <Upload className="h-4 w-4 mr-2" />
-                            Choose File
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="id_card_upload">NID / ID Card</Label>
-                        <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
-                          <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Upload your NID or ID card
-                          </p>
-                          <Button variant="outline" size="sm">
-                            <Upload className="h-4 w-4 mr-2" />
-                            Choose File
-                          </Button>
-                        </div>
-                      </div>
+                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg border border-amber-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calendar className="w-4 h-4 text-amber-600" />
+                      <Label className="text-sm font-medium text-amber-800">
+                        Friday Prayer
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p className="text-lg font-semibold text-amber-900">
+                        {profileData.friday_prayer}
+                      </p>
+                      {profileData.friday_prayer === "Always" && (
+                        <Badge className="bg-green-500 text-white text-xs">
+                          Perfect
+                        </Badge>
+                      )}
                     </div>
                   </div>
+                </div>
 
-                  <Button type="submit" className="w-full" disabled={saving}>
-                    {saving ? (
-                      "Saving..."
-                    ) : (
-                      <>
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Emergency & Identity Information
-                      </>
-                    )}
-                  </Button>
-                </form>
+                {/* Additional Information Section */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-rose-50 to-rose-100 p-6 rounded-lg border border-rose-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Heart className="w-5 h-5 text-rose-600" />
+                      <Label className="text-base font-medium text-rose-800">
+                        Dietary Restrictions
+                      </Label>
+                    </div>
+                    <p className="text-rose-900 font-medium">
+                      {profileData.dietary_restrictions}
+                    </p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 p-6 rounded-lg border border-cyan-200">
+                    <div className="flex items-center gap-2 mb-3">
+                      <BookOpen className="w-5 h-5 text-cyan-600" />
+                      <Label className="text-base font-medium text-cyan-800">
+                        Hobbies & Interests
+                      </Label>
+                    </div>
+                    <p className="text-cyan-900 font-medium">
+                      {profileData.hobbies}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Information Note */}
+                <div className="mt-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <Shield className="w-5 h-5 text-orange-600 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-orange-800">
+                        Hostel Information
+                      </p>
+                      <p className="text-xs text-orange-700 mt-1">
+                        This information is managed by the hostel administration
+                        and cannot be modified by students. For any changes,
+                        please contact the hostel office.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Emergency Information Tab */}
+          <TabsContent value="emergency">
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur">
+              <CardHeader className="bg-gradient-to-r from-red-50 to-pink-50 rounded-t-lg">
+                <CardTitle className="flex items-center gap-2 text-red-900">
+                  <Shield className="w-5 h-5" />
+                  Emergency Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Phone className="w-4 h-4" /> Guardian Contact
+                    </Label>
+                    <Input
+                      value={profileData.guardian_contact}
+                      onChange={(e) =>
+                        handleChange("guardian_contact", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-red-500 focus:ring-red-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <Phone className="w-4 h-4" /> Emergency Contact
+                    </Label>
+                    <Input
+                      value={profileData.emergency_contact}
+                      onChange={(e) =>
+                        handleChange("emergency_contact", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-red-500 focus:ring-red-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Medical Conditions
+                    </Label>
+                    <Input
+                      value={profileData.medical_conditions}
+                      onChange={(e) =>
+                        handleChange("medical_conditions", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-red-500 focus:ring-red-500"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <MapPin className="w-4 h-4" /> Permanent Address
+                    </Label>
+                    <Textarea
+                      value={profileData.permanent_address}
+                      onChange={(e) =>
+                        handleChange("permanent_address", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-red-500 focus:ring-red-500"
+                    />
+                  </div>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <MapPin className="w-4 h-4" /> Current Address
+                    </Label>
+                    <Textarea
+                      value={profileData.current_address}
+                      onChange={(e) =>
+                        handleChange("current_address", e.target.value)
+                      }
+                      className="border-gray-200 focus:border-red-500 focus:ring-red-500"
+                    />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Bottom spacing for fixed save button */}
+        <div className="h-20"></div>
+      </div>
+
+      {/* Enhanced Fixed Bottom Save Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t shadow-2xl p-4 z-40">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600">
+                Auto-saved 2 minutes ago
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Button
+              variant="outline"
+              className="border-gray-300 bg-transparent"
+            >
+              Cancel
+            </Button>
+            <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 shadow-lg">
+              Save Changes
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

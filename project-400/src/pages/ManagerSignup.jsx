@@ -16,7 +16,6 @@ export default function ManagerSignupPage() {
     name: "",
     email: "",
     password: "",
-    hostel: "",
   });
 
   const handleSignup = (e) => {
@@ -55,17 +54,7 @@ export default function ManagerSignupPage() {
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="hostel">Hostel Name</Label>
-                <Input
-                  id="hostel"
-                  type="text"
-                  placeholder="Hostel Name"
-                  value={form.hostel}
-                  onChange={(e) => setForm({ ...form, hostel: e.target.value })}
-                  required
-                />
-              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
                 <Input

@@ -22,11 +22,29 @@ export default function StudentSignupPage() {
     phone: "",
   });
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("[v0] Student signup:", form);
-    // Redirect to student dashboard or show success
-    window.location.href = "/student/dashboard";
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    const res = await fetch("http://localhost:3002/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        gender: form.gender,
+        phone: form.phone,
+      }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      window.location.href = "/student-login";
+    } else {
+      alert(data.error || "Signup failed");
+    }
   };
 
   return (

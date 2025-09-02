@@ -7,6 +7,7 @@ import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import StudentSignupPage from "@/pages/StudentSignup";
+import StudentDashboardPage from "@/pages/StudentDashboardPage";
 import ManagerSignupPage from "@/pages/ManagerSignup";
 // import AdminSignupPage from "@/pages/AdminSignup";
 import AdminLogin from "@/pages/AdminLogin";
@@ -33,6 +34,7 @@ function App() {
           <Route path="/guest" element={<div>Guest Access Page</div>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/student-signup" element={<StudentSignupPage />} />
+          <Route path="/student/dashboard" element={<StudentDashboardPage />} />
           <Route path="/manager-signup" element={<ManagerSignupPage />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
         </Routes>

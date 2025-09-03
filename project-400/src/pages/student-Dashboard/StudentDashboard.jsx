@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Separator from "@/components/ui/separator";
+import StudentSidebar from "@/components/StudentSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CreditCard,
@@ -24,78 +25,7 @@ export default function StudentDashboardPage() {
     <div className="min-h-screen bg-background">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 min-h-screen bg-sidebar border-r border-sidebar-border">
-          <div className="p-6">
-            <div className="flex items-center space-x-2 mb-8">
-              <Building2 className="h-8 w-8 text-sidebar-primary" />
-              <span className="text-2xl font-bold text-sidebar-foreground">
-                UNC
-              </span>
-            </div>
-
-            <nav className="space-y-2">
-              <Link
-                to="/student/dashboard"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-sidebar-accent text-sidebar-accent-foreground"
-              >
-                <Home className="h-5 w-5" />
-                <span>Dashboard</span>
-              </Link>
-              <Link
-                to="/student/profile"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <User className="h-5 w-5" />
-                <span>My Profile</span>
-              </Link>
-              <Link
-                to="/student/fees"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <CreditCard className="h-5 w-5" />
-                <span>Fees</span>
-              </Link>
-              <Link
-                to="/student/meals"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <UtensilsCrossed className="h-5 w-5" />
-                <span>Meals</span>
-              </Link>
-              <Link
-                to="/student/leave"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <CalendarDays className="h-5 w-5" />
-                <span>Leave</span>
-              </Link>
-              <Link
-                to="/student/events"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <Calendar className="h-5 w-5" />
-                <span>Events</span>
-              </Link>
-              <Link
-                to="/student/notices"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
-              >
-                <Bell className="h-5 w-5" />
-                <span>Notices</span>
-              </Link>
-
-              <Separator className="my-4" />
-
-              <Link
-                to="/logout"
-                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-sidebar-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
-              >
-                <LogOut className="h-5 w-5" />
-                <span>Logout</span>
-              </Link>
-            </nav>
-          </div>
-        </aside>
+        <StudentSidebar />
 
         {/* Main Content */}
         <main className="flex-1 p-6">
@@ -225,31 +155,35 @@ export default function StudentDashboardPage() {
                     {/* Breakfast Row */}
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Poha</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Upma</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Paratha</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Idli</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Dosa</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Poori</div>
+                      <div>vat-dal</div>
                     </div>
                     <div className="p-2 bg-muted rounded text-xs">
                       <div className="font-medium">Breakfast</div>
-                      <div>Bread</div>
+                      <div>vat-dal</div>
+                    </div>
+                    <div className="p-2 bg-muted rounded text-xs">
+                      <div className="font-medium">Breakfast</div>
+                      <div>vat-dal</div>
                     </div>
                   </div>
 

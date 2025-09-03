@@ -14,11 +14,24 @@ import { Link } from "react-router-dom";
 export default function StudentLoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("[v0] Student login:", form);
-    // Redirect to student dashboard
-    window.location.href = "/student/dashboard";
+    try {
+      const res = await fetch("http://localhost:3002/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+        credentials: "include", // send cookies
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.location.href = "/student/dashboard";
+      } else {
+        alert(data.error || "Login failed");
+      }
+    } catch (err) {
+      alert("Network error. Please try again.");
+    }
   };
 
   return (

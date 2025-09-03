@@ -1,11 +1,10 @@
-"use client";
-
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import DashboardSidebar from "@/components/DashboardSidebar";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -90,10 +89,9 @@ export default function StudentProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Navigation Bar */}
-
-      <div className="max-w-6xl mx-auto space-y-6 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex">
+      <DashboardSidebar />
+      <div className="flex-1 max-w-6xl mx-auto space-y-6 p-6">
         {/* Enhanced Header */}
         <Card className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-xl">
           <CardContent className="p-8">

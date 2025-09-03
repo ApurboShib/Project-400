@@ -1,3 +1,19 @@
+// Create fee_records table if not exists
+export async function createFeeRecordsTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS fee_records (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      month VARCHAR(20) NOT NULL,
+      year INTEGER NOT NULL,
+      base_fee INTEGER NOT NULL,
+      deduction_amount INTEGER DEFAULT 0,
+      final_amount INTEGER NOT NULL,
+      leave_days INTEGER DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+}
 import { Pool } from "pg";
 
 const pool = new Pool({

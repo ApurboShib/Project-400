@@ -19,16 +19,16 @@ export async function POST(request) {
 
     const hashedPassword = await hashPassword(password)
 
+    // Insert with full_name and role
     const result = await query(
-      `INSERT INTO users (email, password_hash, name, gender, phone) 
-       VALUES ($1, $2, $3, $4, $5) 
-       RETURNING id, email, name, gender, phone`,
-      [email, hashedPassword, name, gender, phone],
+      `INSERT INTO users (email, password_hash, full_name, gender, phone, role) 
+       VALUES ($1, $2, $3, $4, $5, $6) 
+       RETURNING id, email, full_name, gender, phone, role`,
+      [email, hashedPassword, name, gender, phone, "student"],
     )
 
     const newUser = result.rows[0]
-    // No role, so just use id for token
-    const token = generateToken(newUser.id, "student")
+    const token = generateToken(newUser.id, newUser.role)
 
     const response = NextResponse.json({
       message: "Registration successful",

@@ -9,6 +9,7 @@ import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import StudentSignupPage from "@/pages/StudentSignup";
 import StudentDashboardPage from "@/pages/student-dashboard/StudentDashboard";
+import StudentFee from "@/pages/Student-Fee/StudentFee";
 import ManagerSignupPage from "@/pages/ManagerSignup";
 // import AdminSignupPage from "@/pages/AdminSignup";
 import AdminLogin from "@/pages/AdminLogin";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/student-signup" element={<StudentSignupPage />} />
           <Route path="/student/dashboard" element={<StudentDashboardPage />} />
           <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/fees" element={<StudentFee />} />
           <Route path="/manager-signup" element={<ManagerSignupPage />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
         </Routes>

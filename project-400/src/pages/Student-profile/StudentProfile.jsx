@@ -70,7 +70,7 @@ export default function StudentProfile() {
     // Hostel Management Summary
     hostel_summary:
       "Currently residing in Babul-Badol hostel, room A-205, 2nd floor. Maintains regular prayer attendance and follows vegetarian dietary restrictions. No medical conditions reported. Actively participates in hostel activities and maintains good relations with fellow residents.",
-    
+
     // Additional Information
     medical_conditions: "None",
     dietary_restrictions: "vegetarian",
@@ -100,11 +100,15 @@ export default function StudentProfile() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-6">
                 <div className="relative">
-                  {/* <img
-                    src="/logo.png"
+                  <img
+                    src="/professional-student-avatar.png"
                     alt="Profile"
                     className="h-20 w-20 rounded-full border-4 border-white shadow-lg"
-                  /> */}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/placeholder-user.jpg";
+                    }}
+                  />
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
                 <div>
@@ -387,15 +391,15 @@ export default function StudentProfile() {
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                      <BookOpen className="w-4 h-4" /> DEU Summary
+                      <BookOpen className="w-4 h-4" /> University Summary
                     </Label>
                     <Textarea
-                      value={profileData.deu_summary}
+                      value={profileData.university_summary}
                       onChange={(e) =>
-                        handleChange("deu_summary", e.target.value)
+                        handleChange("university_summary", e.target.value)
                       }
                       className="border-gray-200 focus:border-green-500 focus:ring-green-500 min-h-[100px]"
-                      placeholder="Brief summary of your academic journey and achievements at DEU..."
+                      placeholder="Brief summary of your academic journey and achievements at your university..."
                     />
                   </div>
                 </div>

@@ -8,59 +8,89 @@ import {
   Bell,
   LogOut,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Separator from "@/components/ui/separator";
 
 export default function DashboardSidebar() {
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
   return (
     <aside className="w-64 min-h-screen bg-gray-100 border-r border-gray-300">
       <div className="p-6">
         <nav className="space-y-2">
           <Link
             to="/student/dashboard"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-gray-200 text-gray-900 font-semibold"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/dashboard")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <Home className="h-5 w-5" />
             <span>Dashboard</span>
           </Link>
           <Link
             to="/student/profile"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/profile")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <User className="h-5 w-5" />
             <span>My Profile</span>
           </Link>
           <Link
             to="/student/fees"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/fees")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <CreditCard className="h-5 w-5" />
             <span>Fees</span>
           </Link>
           <Link
             to="/student/meals"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/meals")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <UtensilsCrossed className="h-5 w-5" />
             <span>Meals</span>
           </Link>
           <Link
             to="/student/leave"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/leave")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <CalendarDays className="h-5 w-5" />
             <span>Leave</span>
           </Link>
           <Link
             to="/student/events"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/events")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <Calendar className="h-5 w-5" />
             <span>Events</span>
           </Link>
           <Link
             to="/student/notices"
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-200 hover:text-gray-900 transition-colors"
+            className={`flex items-center space-x-3 px-3 py-2 rounded-lg font-semibold transition-colors ${
+              isActive("/student/notices")
+                ? "bg-gray-200 text-gray-900"
+                : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
+            }`}
           >
             <Bell className="h-5 w-5" />
             <span>Notices</span>

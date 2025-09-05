@@ -14,6 +14,7 @@ import ManagerSignupPage from "@/pages/ManagerSignup";
 // import AdminSignupPage from "@/pages/AdminSignup";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminSignup from "@/pages/AdminSignup";
+import StudentLeave from "@/pages/student-leave/StudentLeave";
 <Route path="/admin-signup" element={<AdminSignup />} />;
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/student/fees" element={<StudentFee />} />
           <Route path="/manager-signup" element={<ManagerSignupPage />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
+          <Route path="/student/leave" element={<StudentLeave />} />
         </Routes>
         <Toaster />
       </Router>

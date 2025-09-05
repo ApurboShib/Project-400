@@ -125,6 +125,85 @@ app.get("/api/fee", async (req, res) => {
   }
 });
 
+
+// Student Leave API
+app.get("/api/student-leave", async (req, res) => {
+  try {
+    const token = req.cookies["auth-token"];
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const authMod = await import("./api/lib/auth.js");
+    const decoded = authMod.verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    let queryText, params;
+    if (decoded.role === "admin" || decoded.role === "manager") {
+      queryText = `
+        SELECT lr.*, u.full_name, u.student_id, u.room_number,
+               approver.full_name as approved_by_name
+        FROM leave_requests lr
+        JOIN users u ON lr.user_id = u.id
+        LEFT JOIN users approver ON lr.approved_by = approver.id
+        ORDER BY lr.created_at DESC
+      `;
+      params = [];
+    } else {
+      queryText = `
+        SELECT lr.*, approver.full_name as approved_by_name
+        FROM leave_requests lr
+        LEFT JOIN users approver ON lr.approved_by = approver.id
+        WHERE lr.user_id = $1
+        ORDER BY lr.created_at DESC
+      `;
+      params = [decoded.userId];
+    }
+
+    const result = await query(queryText, params);
+    res.json({ leaveRequests: result.rows });
+  } catch (error) {
+    console.error("Leave requests fetch error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.post("/api/student-leave", async (req, res) => {
+  try {
+    const token = req.cookies["auth-token"];
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const authMod = await import("./api/lib/auth.js");
+    const decoded = authMod.verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+
+    const { start_date, end_date, reason } = req.body;
+    if (!start_date || !end_date) {
+      return res.status(400).json({ error: "Start date and end date are required" });
+    }
+
+    const startDate = new Date(start_date);
+    const endDate = new Date(end_date);
+    const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+    const result = await query(
+      `INSERT INTO leave_requests (user_id, start_date, end_date, reason, total_days)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [decoded.userId, start_date, end_date, reason, totalDays],
+    );
+
+    res.json({ leaveRequest: result.rows[0] });
+  } catch (error) {
+    console.error("Leave request creation error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`API server running on http://localhost:${PORT}`);
 });

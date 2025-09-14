@@ -15,6 +15,9 @@ import ManagerSignupPage from "@/pages/ManagerSignup";
 import AdminLogin from "@/pages/AdminLogin";
 import AdminSignup from "@/pages/AdminSignup";
 import StudentLeave from "@/pages/student-leave/StudentLeave";
+import StudentMeals from "@/pages/student-meals/StudentMeals";
+import StudentNotices from "@/pages/student-notices/StudentNotices";
+import StudentEvents from "@/pages/student-events/StudentEvents";
 <Route path="/admin-signup" element={<AdminSignup />} />;
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -42,6 +45,9 @@ function App() {
           <Route path="/manager-signup" element={<ManagerSignupPage />} />
           <Route path="/admin-signup" element={<AdminSignup />} />
           <Route path="/student/leave" element={<StudentLeave />} />
+          <Route path="/student/meals" element={<StudentMeals />} />
+          <Route path="/student/notices" element={<StudentNotices />} />
+          <Route path="/student/events" element={<StudentEvents />} />
         </Routes>
         <Toaster />
       </Router>

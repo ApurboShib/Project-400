@@ -37,7 +37,9 @@ export default function StudentFee() {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await fetch("/api/users/profile");
+      const response = await fetch("/api/users/profile", {
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);

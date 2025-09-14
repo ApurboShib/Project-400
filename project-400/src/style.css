@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
+/* Removed invalid '@import "tw-animate-css"'; use a proper animation plugin (tailwindcss-animate) */
 
 :root {
     --background: #fff;
